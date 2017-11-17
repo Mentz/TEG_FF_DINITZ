@@ -45,7 +45,7 @@ int main()
 	source = s_i[aux];
 	sink   = s_i[aux2];
 
-	fordfulkerson();
+	dinitz();
 
 	cout << "Fluxo Máximo: " << fmax << endl;
 
@@ -57,6 +57,7 @@ int dinitz()
 {
 	levels.assign(n, vector<int> (0));
 	vector<vector<int> > newadj(n, vector<int> (n, 0));
+	visited.assign(n, false);
 	nivela_com_bfs();
 	for (int i = 0; i < n; i++)
 	{
@@ -68,11 +69,18 @@ int dinitz()
 				adj[levels[i][j]][levels[i][k]] = 0;
 				newadj[levels[i][k]][levels[i][j]] = adj[levels[i][k]][levels[i][j]];
 				adj[levels[i][k]][levels[i][j]] = 0;
+				cout << "nivela " << j << " e " << k << endl;
 			}
 		}
 	}
 
+	visited.assign(n, false);
+
+	cout << "1";
+
 	fordfulkerson();
+
+	cout << "2";
 
 	for (int i = 0; i < n; i++)
 	{
@@ -81,6 +89,12 @@ int dinitz()
 			adj[i][j] = newadj[i][j];
 		}
 	}
+
+	cout << "3";
+
+	fordfulkerson();
+
+	cout << "4";
 	
 	return fmax;
 }
@@ -88,7 +102,27 @@ int dinitz()
 // Nivela com BFS para remover arestas verticais
 int nivela_com_bfs()
 {
-	queue<pair<int, int> > a;
+	int davez, nivel;
+	queue<pair<int, int> > fila;
+	pair<int, int> aux;
+	fila.push(make_pair(source, 0));
+
+	while(!fila.empty())
+	{
+		aux = fila.front(); fila.pop();
+		davez = aux.first;
+		nivel = aux.second;
+		visited[davez] = true;
+		levels[nivel].push_back(davez);
+		for (int i = 0; i < n; i++)
+		{
+			if (adj[davez][i] && !visited[i])
+			{
+				fila.push(make_pair(i, nivel++));
+				visited[i] = true;
+			}
+		}
+	}
 
 	return 0;
 }
@@ -100,7 +134,6 @@ int fordfulkerson()
 
 	do
 	{
-		/*
 		cout << endl;		
 		for (int i = 0; i < n; i++)
 		{
@@ -110,7 +143,6 @@ int fordfulkerson()
 			}
 			cout << endl;
 		}
-		*/
 
 		previous.assign(n, make_pair(-1, INF));
 		visited.assign(n, 0);
@@ -118,7 +150,7 @@ int fordfulkerson()
 		dfs(source, sink, fluxo);
 		fmax += fluxo;
 
-		//cout << source << endl << "f: " << fluxo << endl;
+		cout << source << endl << "f: " << fluxo << endl;
 
 	} while (fluxo != 0);
 

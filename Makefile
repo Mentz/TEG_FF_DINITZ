@@ -1,4 +1,4 @@
-all: FF DINITZ
+all: FF
 
 FF: ff.cpp
 	g++ -o ff ff.cpp -lm

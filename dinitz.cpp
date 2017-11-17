@@ -88,12 +88,13 @@ int dinitz()
 // Nivela com BFS para remover arestas verticais
 int nivela_com_bfs()
 {
-	queue
-	
+	queue<pair<int, int> > a;
+
+	return 0;
 }
 
 // Ford-Fulkerson
-int fordfulkerson(vector<vector<int> > &adj)
+int fordfulkerson()
 {
 	int fluxo;
 
